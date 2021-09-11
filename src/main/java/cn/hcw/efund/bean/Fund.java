@@ -1,14 +1,24 @@
 package cn.hcw.efund.bean;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
+@Document(indexName = "fund_info")
 public class Fund {
 
-    private String id;
+    @Field(type = FieldType.Keyword)
     private String name;
+    @Id
     private String code;
     private String currentPrice;
+    private String estimatedRate;
     private String fee;
     private String status;
     private String type;
@@ -25,5 +35,8 @@ public class Fund {
     private String oneYear;
     private String twoYear;
     private String threeYear;
+    private LocalDateTime addTime = LocalDateTime.now();
+    private LocalDateTime updateTime = LocalDateTime.now();
+
 
 }
