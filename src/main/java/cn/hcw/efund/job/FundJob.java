@@ -3,6 +3,7 @@ package cn.hcw.efund.job;
 
 import cn.hcw.efund.bean.Fund;
 import cn.hcw.efund.service.FundProcessor;
+import cn.hcw.efund.service.FundRealPriceProcessor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 public class FundJob implements InitializingBean {
 
     private String url = "http://fund.eastmoney.com/";
+    private String gzUrl ="https://fundgz.1234567.com.cn/js/";
     @Value("${fund.monitor.list}")
     private String fundList;
 
@@ -32,6 +34,7 @@ public class FundJob implements InitializingBean {
         String[] split = fundList.split(",");
         Arrays.asList(split).stream().forEach(fundCode->{
             Spider.create(new FundProcessor(elasticsearchRestTemplate,new Fund())).addUrl(url+fundCode+".html").thread(1).run();
+            Spider.create(new FundRealPriceProcessor(elasticsearchRestTemplate)).addUrl(gzUrl+fundCode+".js").thread(1).run();
         });
     }
 

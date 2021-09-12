@@ -3,15 +3,12 @@ package cn.hcw.efund.service;
 import cn.hcw.efund.bean.Fund;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
-import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Selectable;
 
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -57,10 +54,6 @@ public class FundProcessor implements PageProcessor {
             List<Selectable> nodes = page.getHtml().xpath("//div[@class='fundDetail-tit']/div").nodes();
             String code = nodes.get(0).xpath("//span[@class='ui-num']/text()").toString();
             String name = nodes.get(0).toString().substring(nodes.get(0).toString().indexOf("\n"),nodes.get(0).toString().indexOf("<span>")).replaceAll("\n","");
-
-
-            List<Selectable> nodes1 = page.getHtml().xpath("//dl[@class='dataItem01']").nodes();
-            String s = nodes1.get(0).toString();
 
             fund.setCode(code);
             fund.setName(name);

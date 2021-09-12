@@ -21,6 +21,7 @@ public class Fund {
     private String code;
     private String currentPrice;
     private String estimatedRate;
+    private String estimatedDate;
     private String fee;
     private String status;
     private String type;
