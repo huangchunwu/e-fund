@@ -4,6 +4,7 @@ import cn.hcw.efund.bean.Fund;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
@@ -11,6 +12,8 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Slf4j
@@ -34,10 +37,14 @@ public class FundRealPriceProcessor implements PageProcessor {
     @Override
     public void process(Page page) {
         Map<String,String> data = handleGSJZData(page.getRawText());
-        Fund fund = elasticsearchRestTemplate.get(data.get("fundCode"), Fund.class);
-        fund.setEstimatedRate(data.get("gszzl"));
-        fund.setEstimatedDate(data.get("gztime"));
-        elasticsearchRestTemplate.save(fund);
+        if (data.containsKey("fundCode")){
+            Fund fund = elasticsearchRestTemplate.get(data.get("fundCode"), Fund.class);
+            if (fund != null){
+                fund.setEstimatedRate(data.get("gszzl"));
+                fund.setEstimatedDate(data.get("gztime"));
+                elasticsearchRestTemplate.save(fund);
+            }
+        }
     }
 
     @Override
@@ -49,16 +56,21 @@ public class FundRealPriceProcessor implements PageProcessor {
     private Map<String,String> handleGSJZData(String data) {
 
         Map<String, String> result = new HashMap<>();
-        int start = data.indexOf("(");
-        int end = data.indexOf(")");
-        if (start < end && start > 0) {
-            String jsonData = data.substring(start + 1, end);
+
+        Pattern pattern = Pattern.compile("\\{.*?}");
+        Matcher matcher = pattern.matcher(data);
+        // 遍例所有匹配的序列
+        while (matcher.find()) {
+            String jsonData = matcher.group();
+            if (StringUtils.isBlank(jsonData)){
+                return result;
+            }
             JSONObject jsonObject = JSON.parseObject(jsonData);
             String fundCode = jsonObject.getString("fundcode");
-            String jzrq = jsonObject.getString("jzrq");//"净值日期："
-            String dwjz = jsonObject.getString("dwjz");//"单位净值："
-            String gsz = jsonObject.getString("gsz");//"估算净值："
-            String gszzl = jsonObject.getString("gszzl");//"估算增长率："
+            String jzrq = jsonObject.getString("jzrq");//"净值日期
+            String dwjz = jsonObject.getString("dwjz");//"单位净值
+            String gsz = jsonObject.getString("gsz");//"估算净值
+            String gszzl = jsonObject.getString("gszzl");//"估算增长率
             String gztime = jsonObject.getString("gztime");//"估算时间
 
             result.put("fundCode",fundCode);
