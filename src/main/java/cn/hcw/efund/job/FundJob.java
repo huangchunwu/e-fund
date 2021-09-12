@@ -38,8 +38,17 @@ public class FundJob implements InitializingBean {
         });
     }
 
+    @Scheduled(cron = "0 0/5 9-15 * * ?")
+    public void realTimePriceScheduled(){
+        String[] split = fundList.split(",");
+        Arrays.asList(split).stream().forEach(fundCode->{
+            Spider.create(new FundRealPriceProcessor(elasticsearchRestTemplate)).addUrl(gzUrl+fundCode+".js").thread(1).run();
+        });
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         run();
+        realTimePriceScheduled();
     }
 }

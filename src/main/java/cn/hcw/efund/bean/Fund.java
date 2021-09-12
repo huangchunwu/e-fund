@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Data
 @Document(indexName = "fund_info")
@@ -20,6 +20,7 @@ public class Fund {
     @Id
     private String code;
     private String currentPrice;
+    private String priceDate;
     private String estimatedRate;
     private String estimatedDate;
     private String fee;

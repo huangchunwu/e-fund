@@ -42,6 +42,8 @@ public class FundRealPriceProcessor implements PageProcessor {
             if (fund != null){
                 fund.setEstimatedRate(data.get("gszzl"));
                 fund.setEstimatedDate(data.get("gztime"));
+                fund.setCurrentPrice(data.get("dwjz"));
+                fund.setPriceDate(data.get("jzrq"));
                 elasticsearchRestTemplate.save(fund);
             }
         }
