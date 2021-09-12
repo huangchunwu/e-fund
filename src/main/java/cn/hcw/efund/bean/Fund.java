@@ -1,7 +1,9 @@
 package cn.hcw.efund.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -35,7 +37,20 @@ public class Fund {
     private String oneYear;
     private String twoYear;
     private String threeYear;
-    private LocalDateTime addTime = LocalDateTime.now();
+    @Field(type = FieldType.Date,
+            format = DateFormat.custom,
+            pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,
+            pattern = "yyyy-MM-dd HH:mm:ss",
+            timezone = "GMT+8")
+    private LocalDateTime addTime;
+
+    @Field(type = FieldType.Date,
+            format = DateFormat.custom,
+            pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,
+            pattern = "yyyy-MM-dd HH:mm:ss",
+            timezone = "GMT+8")
     private LocalDateTime updateTime = LocalDateTime.now();
 
 
