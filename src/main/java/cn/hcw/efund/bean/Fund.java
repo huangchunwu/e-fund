@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Data
@@ -56,4 +57,6 @@ public class Fund {
     private LocalDateTime updateTime = LocalDateTime.now();
 
 
+    @Field(name = "@timestamp")
+    private String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 }
