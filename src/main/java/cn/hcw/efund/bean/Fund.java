@@ -16,10 +16,12 @@ import java.time.format.DateTimeFormatter;
 @Data
 @Document(indexName = "fund_info")
 public class Fund {
+    @Id
+    private String id;
 
     @Field(type = FieldType.Keyword)
     private String name;
-    @Id
+
     private String code;
     private String currentPrice;
     private String priceDate;
@@ -60,4 +62,8 @@ public class Fund {
 
     @Field(name = "@timestamp")
     private String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+    public void generatedId(){
+        this.id = this.code+"_"+this.estimatedDate;
+    }
 }

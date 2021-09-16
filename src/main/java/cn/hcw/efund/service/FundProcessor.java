@@ -3,7 +3,6 @@ package cn.hcw.efund.service;
 import cn.hcw.efund.bean.Fund;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
@@ -60,6 +59,7 @@ public class FundProcessor implements PageProcessor {
 
             fund.setCode(code);
             fund.setName(name);
+            fund.generatedId();
             fund.setType(type);
             fund.setRisk(risk);
             fund.setManager(manager);
