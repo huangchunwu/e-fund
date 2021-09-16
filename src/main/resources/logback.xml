@@ -4,13 +4,13 @@
     <property name="LEVEL" value="INFO" />
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>[%file:%line]%date{yyyy-MM-dd HH:mm:ss.SSS} %blue([%level]) %red({%thread}) %msg%n</Pattern>
+        <Pattern>[%file:%line]%date{yyyy-MM-dd HH:mm:ss.SSS} %blue([%level]) %red({%thread}) %msg%n</Pattern>
         </layout>
     </appender>
 
 	<appender name="FILEAPPEND" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./logs/hcw-kafka-springboot-start.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>./logs/e-fund.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <append>true</append>
@@ -30,6 +30,6 @@
     </appender>
     
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="ASYNC" />
     </root>
 </configuration>
