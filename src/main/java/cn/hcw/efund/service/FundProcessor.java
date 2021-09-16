@@ -57,6 +57,10 @@ public class FundProcessor implements PageProcessor {
             String code = nodes.get(0).xpath("//span[@class='ui-num']/text()").toString();
             String name = nodes.get(0).toString().substring(nodes.get(0).toString().indexOf("\n"),nodes.get(0).toString().indexOf("<span>")).replaceAll("\n","");
 
+            String priceDate = page.getHtml().xpath("//dl[@class='dataItem02']/dt/p/text()").toString();
+            String currentPrice = page.getHtml().xpath("//dl[@class='dataItem02']/dd/span").nodes().get(0).xpath("//span/text()").toString();
+            fund.setPriceDate(priceDate.replace(")",""));
+            fund.setCurrentPrice(currentPrice);
             fund.setCode(code);
             fund.setName(name);
             fund.generatedId();

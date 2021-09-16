@@ -64,6 +64,6 @@ public class Fund {
     private String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
     public void generatedId(){
-        this.id = this.code+"_"+this.estimatedDate;
+        this.id = this.code+"_"+this.priceDate;
     }
 }
