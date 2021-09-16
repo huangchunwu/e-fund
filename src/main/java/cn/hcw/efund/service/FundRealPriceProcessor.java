@@ -10,6 +10,7 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -40,7 +41,7 @@ public class FundRealPriceProcessor implements PageProcessor {
         if (data.containsKey("fundCode")){
             Fund fund = elasticsearchRestTemplate.get(data.get("fundCode"), Fund.class);
             if (fund != null){
-                fund.setEstimatedRate(data.get("gszzl"));
+                fund.setEstimatedRate(new BigDecimal(data.get("gszzl")));
                 fund.setEstimatedDate(data.get("gztime"));
                 fund.setCurrentPrice(data.get("dwjz"));
                 fund.setPriceDate(data.get("jzrq"));

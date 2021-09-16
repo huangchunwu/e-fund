@@ -3,13 +3,16 @@ package cn.hcw.efund.service;
 import cn.hcw.efund.bean.Fund;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Selectable;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class FundProcessor implements PageProcessor {
@@ -62,13 +65,22 @@ public class FundProcessor implements PageProcessor {
             fund.setManager(manager);
             fund.setStartTime(startTime);
 
-            fund.setOneWeek(oneWeek);
-            fund.setOneMonth(oneMonth);
-            fund.setThreeMonth(threeMonth);
-            fund.setSixMonth(sixMonth);
-            fund.setOneYear(oneYear);
-            fund.setTwoYear(twoYear);
-            fund.setThreeYear(threeYear);
+//            fund.setOneWeek(StringUtils.isBlank(oneWeek)?null:new BigDecimal(oneWeek));
+//            fund.setOneMonth(StringUtils.isBlank(oneMonth)?null:new BigDecimal(oneMonth));
+//            fund.setThreeMonth(StringUtils.isBlank(threeMonth)?null:new BigDecimal(threeMonth));
+//            fund.setSixMonth(StringUtils.isBlank(sixMonth)?null:new BigDecimal(sixMonth));
+//            fund.setOneYear(StringUtils.isBlank(oneYear)?null:new BigDecimal(oneYear));
+//            fund.setTwoYear(StringUtils.isBlank(twoYear)?null:new BigDecimal(twoYear));
+//            fund.setThreeYear(StringUtils.isBlank(threeYear)?null:new BigDecimal(threeYear));
+
+            Optional.ofNullable(oneWeek).filter(p->!p.equals("--")).ifPresent(c->fund.setOneWeek(new BigDecimal(c)));
+            Optional.ofNullable(oneMonth).filter(p->!p.equals("--")).ifPresent(c->fund.setOneMonth(new BigDecimal(c)));
+            Optional.ofNullable(threeMonth).filter(p->!p.equals("--")).ifPresent(c->fund.setThreeMonth(new BigDecimal(c)));
+            Optional.ofNullable(sixMonth).filter(p->!p.equals("--")).ifPresent(c->fund.setSixMonth(new BigDecimal(c)));
+            Optional.ofNullable(oneYear).filter(p->!p.equals("--")).ifPresent(c->fund.setOneYear(new BigDecimal(c)));
+            Optional.ofNullable(twoYear).filter(p->!p.equals("--")).ifPresent(c->fund.setTwoYear(new BigDecimal(c)));
+            Optional.ofNullable(threeYear).filter(p->!p.equals("--")).ifPresent(c->fund.setThreeYear(new BigDecimal(c)));
+
             log.info(JSON.toJSONString(fund));
 
             elasticsearchRestTemplate.save(fund);

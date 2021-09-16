@@ -8,6 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -22,7 +23,7 @@ public class Fund {
     private String code;
     private String currentPrice;
     private String priceDate;
-    private String estimatedRate;
+    private BigDecimal estimatedRate;
     private String estimatedDate;
     private String fee;
     private String status;
@@ -32,14 +33,14 @@ public class Fund {
     private String manager;
     private String startTime;
     private String company;
-    private String oneDay;
-    private String oneWeek;
-    private String oneMonth;
-    private String threeMonth;
-    private String sixMonth;
-    private String oneYear;
-    private String twoYear;
-    private String threeYear;
+    private BigDecimal oneDay;
+    private BigDecimal oneWeek;
+    private BigDecimal oneMonth;
+    private BigDecimal threeMonth;
+    private BigDecimal sixMonth;
+    private BigDecimal oneYear;
+    private BigDecimal twoYear;
+    private BigDecimal threeYear;
     @Field(type = FieldType.Date,
             format = DateFormat.custom,
             pattern = "yyyy-MM-dd HH:mm:ss")
