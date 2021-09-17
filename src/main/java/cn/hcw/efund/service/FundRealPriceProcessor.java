@@ -42,17 +42,15 @@ public class FundRealPriceProcessor implements PageProcessor {
         Map<String,String> data = handleGSJZData(page.getRawText());
         if (data.containsKey("fundCode")){
             Fund fund = elasticsearchRestTemplate.get(data.get("fundCode")+"_"+data.get("gztime").substring(0,10), Fund.class);
-            if (fund == null){
-               fund = new Fund();
-               fund.setAddTime(LocalDateTime.now());
-               fund.setCode(data.get("fundCode"));
+            if (fund != null){
+                fund.setEstimatedRate(new BigDecimal(data.get("gszzl")));
+                fund.setEstimatedDate(data.get("gztime"));
+                fund.setCurrentPrice(data.get("dwjz"));
+                fund.setPriceDate(data.get("jzrq"));
+                fund.generatedId();
+                elasticsearchRestTemplate.save(fund);
             }
-            fund.setEstimatedRate(new BigDecimal(data.get("gszzl")));
-            fund.setEstimatedDate(data.get("gztime"));
-            fund.setCurrentPrice(data.get("dwjz"));
-            fund.setPriceDate(data.get("jzrq"));
-            fund.generatedId();
-            elasticsearchRestTemplate.save(fund);
+
         }
     }
 
