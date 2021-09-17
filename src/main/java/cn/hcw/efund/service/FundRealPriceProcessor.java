@@ -41,7 +41,7 @@ public class FundRealPriceProcessor implements PageProcessor {
     public void process(Page page) {
         Map<String,String> data = handleGSJZData(page.getRawText());
         if (data.containsKey("fundCode")){
-            Fund fund = elasticsearchRestTemplate.get(data.get("fundCode")+"_"+data.get("gztime").substring(0,10), Fund.class);
+            Fund fund = elasticsearchRestTemplate.get(data.get("fundCode")+"_"+data.get("jzrq"), Fund.class);
             if (fund != null){
                 fund.setEstimatedRate(new BigDecimal(data.get("gszzl")));
                 fund.setEstimatedDate(data.get("gztime"));
