@@ -11,6 +11,8 @@ import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -42,11 +44,14 @@ public class FundRealPriceProcessor implements PageProcessor {
             Fund fund = elasticsearchRestTemplate.get(data.get("fundCode")+"_"+data.get("gztime").substring(0,10), Fund.class);
             if (fund == null){
                fund = new Fund();
+               fund.setAddTime(LocalDateTime.now());
+               fund.setCode(data.get("fundCode"));
             }
             fund.setEstimatedRate(new BigDecimal(data.get("gszzl")));
             fund.setEstimatedDate(data.get("gztime"));
             fund.setCurrentPrice(data.get("dwjz"));
             fund.setPriceDate(data.get("jzrq"));
+            fund.generatedId();
             elasticsearchRestTemplate.save(fund);
         }
     }
