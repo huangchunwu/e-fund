@@ -49,6 +49,6 @@ public class FundJob implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         run();
-        realTimePriceScheduled();
+        //realTimePriceScheduled();
     }
 }
