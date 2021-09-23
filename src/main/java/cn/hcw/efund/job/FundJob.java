@@ -29,7 +29,7 @@ public class FundJob implements InitializingBean {
     /**
      * 每天盘后更新一下
      */
-   @Scheduled(cron = "0 5 15 * * ?")
+   @Scheduled(cron = "0 0 15/1 * * ?")
     public void run(){
         String[] split = fundList.split(",");
         Arrays.asList(split).stream().forEach(fundCode->{
